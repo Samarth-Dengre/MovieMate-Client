@@ -1,3 +1,4 @@
 export const Colors = {
-  primaryBackGround: "#262626",
+  primaryBackGround: "#1a1a1a",
+  accent800: "#ff1a1a",
 };

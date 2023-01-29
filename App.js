@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { StatusBar } from "expo-status-bar";
-import { useContext, useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { useContext, useEffect, useState } from "react";
+import { StyleSheet, View, Image } from "react-native";
 import LoginScreen from "./screens/LoginScreen";
 import AuthContextProvider, { AuthContext } from "./store/authContext";
 import SignupScreen from "./screens/SignupScreen";
@@ -25,14 +25,15 @@ const AuthStack = () => {
         headerStyle: {
           backgroundColor: "black",
         },
+        headerTintColor: "white",
       }}
     >
       <BottomTabs.Screen
-        name="Movies"
+        name="Home"
         component={MoviesScreen}
         options={{
           tabBarIcon: ({ color, size }) => {
-            return <MaterialIcons name="movie" color={color} size={size} />;
+            return <MaterialIcons name="home" color={color} size={24} />;
           },
         }}
       />
@@ -41,7 +42,7 @@ const AuthStack = () => {
         component={FavoritesScreen}
         options={{
           tabBarIcon: ({ color, size }) => {
-            return <Ionicons name="star" color={color} size={size} />;
+            return <Ionicons name="star" color={color} size={24} />;
           },
         }}
       />
@@ -54,7 +55,7 @@ const AuthStack = () => {
               <Ionicons
                 name={focused ? "person" : "person-outline"}
                 color={color}
-                size={size}
+                size={24}
               />
             );
           },
@@ -85,17 +86,43 @@ const IsNotAuthStack = () => {
 // This component will check whether the user is authenticated or not and present the respective screen stack
 const Root = () => {
   const authCtx = useContext(AuthContext);
+  const [appIsReady, setAppIsReady] = useState(false);
 
-  // This hook will run for the first time when the app is opened and will verify the user stored in local-database with the server
   useEffect(() => {
     async function fetchAndVerifyStoredUser() {
-      const user = await AsyncStorage.getItem("user");
-      if (user) {
-        authCtx.authenticate(user);
+      try {
+        setAppIsReady(false);
+        const user = await AsyncStorage.getItem("user");
+        if (user) {
+          authCtx.authenticate(user);
+        }
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setAppIsReady(true);
       }
     }
     fetchAndVerifyStoredUser();
   }, []);
+
+  if (!appIsReady) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "black",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Image
+          source={require("./assets/giphy.gif")}
+          style={{ resizeMode: "contain" }}
+        />
+      </View>
+    );
+  }
+
   const myTheme = {
     colors: {
       background: Colors.primaryBackGround,

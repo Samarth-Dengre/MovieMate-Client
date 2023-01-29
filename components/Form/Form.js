@@ -7,9 +7,18 @@ import {
   Text,
 } from "react-native";
 import FilledButton from "../Buttons/FilledButton";
+import OutlinedButton from "../Buttons/OutLinedButton";
 
-function Form({ inputs, onSubmit, title }) {
+function Form({
+  inputs, //All the input fields
+  onSubmit, //When the primary button is clicked
+  title, // Title of Form
+  onOtherButtonPress, //When the secondary button is pressed
+  primaryLabel, //Label of primary button
+  secondaryLabel, //Label of secondary button
+}) {
   return (
+    // Used KeyboardAvoiding view to prevent screen layout from being affected when the keyboard is opened
     <KeyboardAvoidingView style={styles.container}>
       <View style={styles.formContainer}>
         <Text style={styles.title}>{title}</Text>
@@ -19,9 +28,16 @@ function Form({ inputs, onSubmit, title }) {
               key={index}
               placeholder={input.placeholder}
               style={styles.inputText}
+              secureTextEntry={input.secureTextEntry}
+              keyboardType={input.keyboardType}
+              onChangeText={input.onChangeText}
             />
           ))}
-        <FilledButton label="Login" onPress={onSubmit} />
+        {/* The container to hold primary and secondary button */}
+        <View style={styles.buttonContainer}>
+          <FilledButton label={primaryLabel} onPress={onSubmit} />
+          <OutlinedButton label={secondaryLabel} onPress={onOtherButtonPress} />
+        </View>
       </View>
     </KeyboardAvoidingView>
   );
@@ -41,22 +57,29 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   inputText: {
-    height: 40,
+    height: 50,
     fontSize: 16,
-    color: "white",
+    color: "black",
     backgroundColor: "beige",
     width: "85%",
     borderRadius: 6,
     padding: 10,
     marginBottom: 30,
+    elevation: 16,
   },
   formContainer: {
     backgroundColor: "black",
-    width: "90%",
-    height: 380,
+    overflow: "hidden",
+    width: "95%",
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 20,
-    elevation: 4,
+    paddingVertical: 30,
+    elevation:4
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    width: "85%",
   },
 });

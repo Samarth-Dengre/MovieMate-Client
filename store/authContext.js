@@ -12,7 +12,12 @@ export default function AuthContextProvider({ children }) {
   const [user, setUser] = useState();
   function authenticate(user) {
     setUser(user);
-    AsyncStorage.setItem("user", user);
+    const userIsPresent = AsyncStorage.getItem("user");
+    if (userIsPresent) {
+      AsyncStorage.removeItem("user");
+    }
+    const userString = JSON.stringify(user);
+    AsyncStorage.setItem("user", userString);
   }
   function logout() {
     setUser(null);

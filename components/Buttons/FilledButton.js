@@ -20,10 +20,10 @@ export default FilledButton;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "red",
+    backgroundColor: Colors.accent800,
     borderRadius: 6,
     elevation: 2,
-    width: 150,
+    width: 170,
     height: 40,
     alignItems: "center",
     justifyContent: "center",
