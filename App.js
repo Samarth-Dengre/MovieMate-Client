@@ -13,10 +13,12 @@ import MoviesScreen from "./screens/MoviesScreen";
 import FavoritesScreen from "./screens/FavoritesScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Colors } from "./constants/Colors";
+import { useFonts } from "expo-font";
 
 // Different Navigation Stacks For Screens
 const BottomTabs = createBottomTabNavigator();
 const NativeStack = createNativeStackNavigator();
+
 // The component to be rendered when the user is auhenticated
 const AuthStack = () => {
   return (
@@ -26,23 +28,41 @@ const AuthStack = () => {
           backgroundColor: "black",
         },
         headerTintColor: "white",
+        tabBarStyle: {
+          backgroundColor: "black",
+        },
+        tabBarActiveTintColor: Colors.accent800,
+        tabBarInactiveTintColor: "white",
       }}
+      initialRouteName="Home"
     >
-      <BottomTabs.Screen
-        name="Home"
-        component={MoviesScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => {
-            return <MaterialIcons name="home" color={color} size={24} />;
-          },
-        }}
-      />
       <BottomTabs.Screen
         name="Favorites"
         component={FavoritesScreen}
         options={{
-          tabBarIcon: ({ color, size }) => {
-            return <Ionicons name="star" color={color} size={24} />;
+          tabBarIcon: ({ focused, color, size }) => {
+            return (
+              <Ionicons
+                name={focused ? "star" : "star-outline"}
+                color={color}
+                size={size}
+              />
+            );
+          },
+        }}
+      />
+      <BottomTabs.Screen
+        name="Home"
+        component={MoviesScreen}
+        options={{
+          tabBarIcon: ({ focused, color, size }) => {
+            return (
+              <Ionicons
+                name={focused ? "md-home-sharp" : "md-home-outline"}
+                color={color}
+                size={size}
+              />
+            );
           },
         }}
       />
@@ -55,7 +75,7 @@ const AuthStack = () => {
               <Ionicons
                 name={focused ? "person" : "person-outline"}
                 color={color}
-                size={24}
+                size={size}
               />
             );
           },
@@ -88,6 +108,12 @@ const Root = () => {
   const authCtx = useContext(AuthContext);
   const [appIsReady, setAppIsReady] = useState(false);
 
+  const [loaded] = useFonts({
+    "Oswald-Regular": require("./fonts/Oswald-Regular.ttf"),
+    "RobotoSlab-Regular": require("./fonts/RobotoSlab-Regular.ttf"),
+    "Lora-Regular": require("./fonts/Lora-Regular.ttf"),
+  });
+
   useEffect(() => {
     async function fetchAndVerifyStoredUser() {
       try {
@@ -105,7 +131,7 @@ const Root = () => {
     fetchAndVerifyStoredUser();
   }, []);
 
-  if (!appIsReady) {
+  if (!appIsReady || !loaded) {
     return (
       <View
         style={{
