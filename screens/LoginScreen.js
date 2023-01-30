@@ -9,6 +9,7 @@ function LoginScreen({ navigation }) {
   const authCtx = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   // Inputs array define the fields that are to be present in th login form
   const inputs = [
     {
@@ -45,11 +46,12 @@ function LoginScreen({ navigation }) {
     const isValid = checkValidity();
     if (!isValid) return false;
     try {
+      setIsLoading(true);
       // Sending a get request to the server for login
       const { data } = await axios.get(
         `${auth}/?email=${email}&password=${password}`
       );
-
+      setIsLoading(false);
       // If the status is 400, then the user is not authenticated ot there is some error in the server
       if (data.status === 400) {
         Toast.showWithGravity(data.message, Toast.SHORT, Toast.TOP);
@@ -59,7 +61,7 @@ function LoginScreen({ navigation }) {
       // If the status is 200, then the user is authenticated
       authCtx.authenticate(data);
     } catch (error) {
-      console.log(error);
+      setIsLoading(false);
       return;
     }
   }
@@ -67,6 +69,21 @@ function LoginScreen({ navigation }) {
   return (
     <View style={styles.container}>
       {/* This form component renders the login form */}
+      {isLoading && (
+        <View
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "black",
+            opacity: 0.5,
+            flex: 1,
+            zIndex: 2,
+          }}
+        ></View>
+      )}
       <Form
         inputs={inputs}
         onSubmit={onLoginFormSubmitHandler}
@@ -84,5 +101,6 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    position: "relative",
   },
 });

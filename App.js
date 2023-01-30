@@ -6,7 +6,7 @@ import LoginScreen from "./screens/LoginScreen";
 import AuthContextProvider, { AuthContext } from "./store/authContext";
 import SignupScreen from "./screens/SignupScreen";
 import { NavigationContainer } from "@react-navigation/native";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ProfileScreen from "./screens/ProfileScreen";
 import MoviesScreen from "./screens/MoviesScreen";
@@ -14,6 +14,8 @@ import FavoritesScreen from "./screens/FavoritesScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Colors } from "./constants/Colors";
 import { useFonts } from "expo-font";
+import IndividualMovieScreen from "./screens/IndividualMovieScreen";
+import GenreScreen from "./screens/GenreScreen";
 
 // Different Navigation Stacks For Screens
 const BottomTabs = createBottomTabNavigator();
@@ -79,6 +81,32 @@ const AuthStack = () => {
               />
             );
           },
+        }}
+      />
+      <BottomTabs.Screen
+        name="Individual"
+        component={IndividualMovieScreen}
+        options={{
+          tabBarIconStyle: {
+            display: "none",
+          },
+          tabBarLabelStyle: {
+            display: "none",
+          },
+          tabBarButton: () => null,
+        }}
+      />
+      <BottomTabs.Screen
+        name="Genre"
+        component={GenreScreen}
+        options={{
+          tabBarIconStyle: {
+            display: "none",
+          },
+          tabBarLabelStyle: {
+            display: "none",
+          },
+          tabBarButton: () => null,
         }}
       />
     </BottomTabs.Navigator>

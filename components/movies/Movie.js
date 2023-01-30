@@ -1,19 +1,22 @@
 // This component will render the individual movie item
 
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { View, StyleSheet, Text, Image, Pressable } from "react-native";
 
 function Movie({ movie }) {
+  const navigation = useNavigation();
+
   // This function will be called when user presses on the movie card
   function handleMoviePress(id) {
     // Redirect to the movie details page
-    console.log("Movie pressed:", id);
+    navigation.navigate("Individual", { id, title: movie.movieName });
   }
 
   //   This function will be called when user presses on the genre text
   function handleGenrePress(genre) {
     // Redirect to the genre page
-    console.log("Genre pressed:", genre);
+    navigation.navigate("Genre", { genre });
   }
 
   return (

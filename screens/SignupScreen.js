@@ -12,7 +12,7 @@ function SignupScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
+  const [isLoading, setIsLoading] = useState(false);
   // Inputs array define the fields that are to be present in th login form
   const inputs = [
     {
@@ -78,20 +78,35 @@ function SignupScreen({ navigation }) {
         email,
         password,
       };
+
+      setIsLoading(true);
       const { data } = await axios.post(auth, user);
+      setIsLoading(false);
       if (data.status === 400) {
         Toast.showWithGravity(data.message, Toast.SHORT, Toast.TOP);
         return;
       }
       authCtx.authenticate(user);
     } catch (error) {
-      console.log(error);
+      setIsLoading(false);
     }
   }
 
   return (
     <View style={styles.container}>
       {/* This form component renders the signup form */}
+      <View
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: "black",
+          opacity: 0.5,
+          flex: 1,
+        }}
+      ></View>
       <Form
         inputs={inputs}
         onSubmit={onSignupFormSubmitHandler}
@@ -109,5 +124,6 @@ export default SignupScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    position: "relative",
   },
 });
