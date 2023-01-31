@@ -10,18 +10,19 @@ export const AuthContext = createContext({
 
 export default function AuthContextProvider({ children }) {
   const [user, setUser] = useState();
-  function authenticate(user) {
+
+  async function authenticate(user) {
     setUser(user);
-    const userIsPresent = AsyncStorage.getItem("user");
+    const userIsPresent = await AsyncStorage.getItem("user");
     if (userIsPresent) {
-      AsyncStorage.removeItem("user");
+      await AsyncStorage.removeItem("user");
     }
-    const userString = JSON.stringify(user);
-    AsyncStorage.setItem("user", userString);
+    const userString = await JSON.stringify(user);
+    await AsyncStorage.setItem("user", userString);
   }
-  function logout() {
+  async function logout() {
     setUser(null);
-    AsyncStorage.removeItem("user");
+    await AsyncStorage.removeItem("user");
   }
 
   const value = {

@@ -1,10 +1,11 @@
 import React, { useContext, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ActivityIndicator } from "react-native";
 import Form from "../components/Form/Form";
 import { AuthContext } from "../store/authContext";
 import Toast from "react-native-simple-toast";
 import axios from "axios";
 import { auth } from "../utils/routes";
+import Loader from "../components/Loaders/Loader";
 function LoginScreen({ navigation }) {
   const authCtx = useContext(AuthContext);
   const [email, setEmail] = useState("");
@@ -59,7 +60,7 @@ function LoginScreen({ navigation }) {
       }
 
       // If the status is 200, then the user is authenticated
-      authCtx.authenticate(data);
+      authCtx.authenticate(data.user);
     } catch (error) {
       setIsLoading(false);
       return;
@@ -69,21 +70,7 @@ function LoginScreen({ navigation }) {
   return (
     <View style={styles.container}>
       {/* This form component renders the login form */}
-      {isLoading && (
-        <View
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "black",
-            opacity: 0.5,
-            flex: 1,
-            zIndex: 2,
-          }}
-        ></View>
-      )}
+      {isLoading && <Loader />}
       <Form
         inputs={inputs}
         onSubmit={onLoginFormSubmitHandler}

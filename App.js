@@ -148,7 +148,7 @@ const Root = () => {
         setAppIsReady(false);
         const user = await AsyncStorage.getItem("user");
         if (user) {
-          authCtx.authenticate(user);
+          authCtx.authenticate(JSON.parse(user));
         }
       } catch (e) {
         console.warn(e);

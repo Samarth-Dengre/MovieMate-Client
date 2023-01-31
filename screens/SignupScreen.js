@@ -5,6 +5,7 @@ import { AuthContext } from "../store/authContext";
 import Toast from "react-native-simple-toast";
 import axios from "axios";
 import { auth } from "../utils/routes";
+import Loader from "../components/Loaders/Loader";
 
 function SignupScreen({ navigation }) {
   const authCtx = useContext(AuthContext);
@@ -86,7 +87,7 @@ function SignupScreen({ navigation }) {
         Toast.showWithGravity(data.message, Toast.SHORT, Toast.TOP);
         return;
       }
-      authCtx.authenticate(user);
+      authCtx.authenticate(data.user);
     } catch (error) {
       setIsLoading(false);
     }
@@ -95,18 +96,7 @@ function SignupScreen({ navigation }) {
   return (
     <View style={styles.container}>
       {/* This form component renders the signup form */}
-      <View
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: "black",
-          opacity: 0.5,
-          flex: 1,
-        }}
-      ></View>
+      {isLoading && <Loader />}
       <Form
         inputs={inputs}
         onSubmit={onSignupFormSubmitHandler}

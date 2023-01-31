@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Image, Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import axios from "axios";
 import { moviesRoute } from "../utils/routes";
 import MoviesList from "../components/movies/MoviesList";
+import GifLoader from "../components/Loaders/GifLoader";
 function MoviesScreen() {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,11 +26,19 @@ function MoviesScreen() {
   return (
     <View style={styles.container}>
       {loading ? (
-        <Image source={require("../assets/giphy.gif")} />
+        <GifLoader />
       ) : movies.length > 0 ? (
         <MoviesList movies={movies} />
       ) : (
-        <Text style={styles.text}>No movies found</Text>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text style={styles.text}>No movies found</Text>
+        </View>
       )}
     </View>
   );
