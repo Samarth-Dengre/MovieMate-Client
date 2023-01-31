@@ -1,16 +1,17 @@
 import React, { useContext, useState } from "react";
-import { View, StyleSheet, ActivityIndicator } from "react-native";
+import { View, StyleSheet } from "react-native";
 import Form from "../components/Form/Form";
 import { AuthContext } from "../store/authContext";
 import Toast from "react-native-simple-toast";
 import axios from "axios";
 import { auth } from "../utils/routes";
-import Loader from "../components/Loaders/Loader";
+import SimpleModal from "../components/modals/SimpleModal";
 function LoginScreen({ navigation }) {
   const authCtx = useContext(AuthContext);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState(""); // Email state
+  const [password, setPassword] = useState(""); // Password state
+  const [isLoading, setIsLoading] = useState(false); // Loading state to show the loader when the user is logging in
+
   // Inputs array define the fields that are to be present in th login form
   const inputs = [
     {
@@ -29,9 +30,11 @@ function LoginScreen({ navigation }) {
   // Function to check validity of the fields
   function checkValidity() {
     if (!email.includes("@")) {
+      // If the email does not contain @, then it is not a valid email
       Toast.showWithGravity("Email is not correct", Toast.SHORT, Toast.TOP);
       return false;
     } else if (password.length < 5) {
+      // If the password is less than 5 characters, then it is not a valid password
       Toast.showWithGravity(
         "Password should contain atleast 6 characters".Toast.SHORT,
         Toast.TOP
@@ -44,7 +47,7 @@ function LoginScreen({ navigation }) {
 
   // Function to handle the login form submit
   async function onLoginFormSubmitHandler() {
-    const isValid = checkValidity();
+    const isValid = checkValidity(); // Checking the validity of the fields
     if (!isValid) return false;
     try {
       setIsLoading(true);
@@ -69,8 +72,9 @@ function LoginScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      {/* This loader component is shown when the user is logging in */}
+      <SimpleModal visible={isLoading} />
       {/* This form component renders the login form */}
-      {isLoading && <Loader />}
       <Form
         inputs={inputs}
         onSubmit={onLoginFormSubmitHandler}

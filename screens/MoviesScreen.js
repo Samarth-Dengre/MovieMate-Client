@@ -3,19 +3,23 @@ import { Text, View, StyleSheet } from "react-native";
 import axios from "axios";
 import { moviesRoute } from "../utils/routes";
 import MoviesList from "../components/movies/MoviesList";
-import GifLoader from "../components/Loaders/GifLoader";
+import GifModal from "../components/modals/GifModal";
 function MoviesScreen() {
-  const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [movies, setMovies] = useState([]); // movies state
+  const [loading, setLoading] = useState(true); // loading state to show a loader while fetching movies
 
   // Fetching movies from the server, this hook will run when the component is mounted
   useEffect(() => {
+    // fetching movies from the server
     async function fetchMovies() {
+      // sending request to the server to get all the movies
       const { data } = await axios.get(moviesRoute);
       if (data.status === 200) {
+        // if the movies are found, we set the movies state to the movies array
         setMovies(data.movies);
         setLoading(false);
       } else if (data.status === 400) {
+        // if the movies are not found, we show an error page
         setLoading(false);
         return <ErrorPage />;
       }
@@ -25,9 +29,11 @@ function MoviesScreen() {
 
   return (
     <View style={styles.container}>
-      {loading ? (
-        <GifLoader />
-      ) : movies.length > 0 ? (
+      {/* showing the loader while fetching movies */}
+      <GifModal visible={loading} />
+
+      {/* if the movies state is not empty, we show the movies list, otherwise we show a message */}
+      {movies.length > 0 ? (
         <MoviesList movies={movies} />
       ) : (
         <View

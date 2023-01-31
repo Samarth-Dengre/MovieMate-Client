@@ -25,14 +25,19 @@ function Movie({ movie }) {
       style={({ pressed }) => [styles.container, pressed && styles.pressed]}
       onPress={handleMoviePress.bind(this, movie.id)}
     >
+      {/* This will show the image of the movie */}
       <Image
         source={{ uri: movie.image }}
         style={{ width: "100%", height: 180 }}
       />
+
+      {/* This will show the title and imdb of the movie */}
       <View style={styles.titleContainer}>
         <Text style={[styles.text, styles.title]}>{movie.movieName}</Text>
         <Text style={styles.text}>imdb: {movie.imdb}</Text>
       </View>
+
+      {/* This will show the genre of the movie */}
       <View style={styles.genre}>
         {movie.genre.map((genre, index) => {
           return (
@@ -50,6 +55,8 @@ function Movie({ movie }) {
           );
         })}
       </View>
+
+      {/* This will show the cast and duration of the movie */}
       <View style={styles.bottomContainer}>
         <View style={styles.castContainer}>
           <Text style={{ color: "grey", fontFamily: "Lora-Regular" }}>
@@ -67,6 +74,7 @@ function Movie({ movie }) {
 export default Movie;
 
 const styles = StyleSheet.create({
+  // This will style the movie card container
   container: {
     flex: 1,
     margin: 15,
@@ -76,31 +84,42 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     elevation: 5,
   },
+  // This will change the text color to white
   text: {
     color: "white",
   },
+  // This will change the opacity of the thing when user presses on it
   pressed: {
     opacity: 0.7,
   },
+  // This will style the title of the movie
   title: {
     fontSize: 16,
     fontFamily: "RobotoSlab-Regular",
   },
+
+  // This will style the title and imdb container
   titleContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     padding: 10,
   },
+
+  // This will style the genre container
   genre: {
     flexDirection: "row",
     justifyContent: "space-evenly",
     padding: 10,
   },
+
+  // This will style the genre text
   genreText: {
     color: "white",
     fontSize: 12,
     fontFamily: "RobotoSlab-Regular",
   },
+
+  // This will style the genre text container
   genreTextContainer: {
     backgroundColor: "#404040",
     borderRadius: 15,
@@ -110,16 +129,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+
+  // This will style the duration container
   durationContainer: {
     flexDirection: "row",
     justifyContent: "flex-end",
     paddingHorizontal: 10,
   },
+
+  // This will style the cast and duration container
   bottomContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     padding: 10,
   },
+
+  // This will style the cast container
   castContainer: {
     flexDirection: "row",
     justifyContent: "flex-start",

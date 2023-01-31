@@ -7,7 +7,6 @@ function DetailedMoviePage({ movie }) {
 
   // Destructure the movie object
   const {
-    id,
     movieName,
     description,
     genre,
@@ -26,6 +25,7 @@ function DetailedMoviePage({ movie }) {
 
   return (
     <View style={styles.container}>
+      {/* This will show the video of the movie */}
       <View
         style={{
           height: 250,
@@ -41,11 +41,13 @@ function DetailedMoviePage({ movie }) {
           }}
         />
       </View>
+
+      {/* This will show the genre, imdb, year, duration of the movie */}
       <View style={styles.detailsContainer}>
         <View style={styles.genreContainer}>
           {genre.map((genre, index) => {
             return (
-              <Pressable
+              <Pressable // Making the genre text pressable so that when user presses on it, it will show redirect to the genre page
                 key={index}
                 style={({ pressed }) => [
                   styles.genre,
@@ -64,7 +66,11 @@ function DetailedMoviePage({ movie }) {
           <Text style={styles.greyColor}>Duration: {length}m</Text>
         </View>
       </View>
+
+      {/* This will show the description of the movie */}
       <Text style={[styles.text, styles.description]}>{description}</Text>
+
+      {/* This will show the cast and language of the movie */}
       <View style={[styles.detailsContainer, styles.bottomContainer]}>
         <Text
           style={[

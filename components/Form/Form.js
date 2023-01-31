@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: "row",
-    justifyContent: "space-evenly",
-    width: "85%",
+    justifyContent: "space-around",
+    width: "90%",
   },
 });
