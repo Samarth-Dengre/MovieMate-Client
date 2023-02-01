@@ -31,7 +31,7 @@ function LoginScreen({ navigation }) {
   function checkValidity() {
     if (!email.includes("@")) {
       // If the email does not contain @, then it is not a valid email
-      Toast.showWithGravity("Email is not correct", Toast.SHORT, Toast.TOP);
+      Toast.showWithGravity("Email is not correct",Toast.SHORT, Toast.TOP);
       return false;
     } else if (password.length < 5) {
       // If the password is less than 5 characters, then it is not a valid password

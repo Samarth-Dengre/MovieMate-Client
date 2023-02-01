@@ -41,7 +41,11 @@ function GenreScreen({ navigation, route }) {
     };
 
     fetchMovies();
-  }, [route]); // run the hook when the route changes
+    return () => {
+      setMovies(); // clean up the movies state
+      setLoading(true); // clean up the loading state
+    };
+  }, [route.params.genre]); // run the hook when the route changes
 
   return (
     <View style={styles.container}>

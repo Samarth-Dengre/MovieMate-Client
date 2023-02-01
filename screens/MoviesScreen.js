@@ -4,6 +4,7 @@ import axios from "axios";
 import { moviesRoute } from "../utils/routes";
 import MoviesList from "../components/movies/MoviesList";
 import GifModal from "../components/modals/GifModal";
+import ErrorPage from "../components/ErrorPage";
 function MoviesScreen() {
   const [movies, setMovies] = useState([]); // movies state
   const [loading, setLoading] = useState(true); // loading state to show a loader while fetching movies
@@ -12,14 +13,19 @@ function MoviesScreen() {
   useEffect(() => {
     // fetching movies from the server
     async function fetchMovies() {
-      // sending request to the server to get all the movies
-      const { data } = await axios.get(moviesRoute);
-      if (data.status === 200) {
-        // if the movies are found, we set the movies state to the movies array
-        setMovies(data.movies);
-        setLoading(false);
-      } else if (data.status === 400) {
-        // if the movies are not found, we show an error page
+      try {
+        // sending request to the server to get all the movies
+        const { data } = await axios.get(moviesRoute);
+        if (data.status === 200) {
+          // if the movies are found, we set the movies state to the movies array
+          setMovies(data.movies);
+          setLoading(false);
+        } else if (data.status === 400) {
+          // if the movies are not found, we show an error page
+          setLoading(false);
+          return <ErrorPage />;
+        }
+      } catch (error) {
         setLoading(false);
         return <ErrorPage />;
       }
