@@ -31,6 +31,8 @@ function Form({
               secureTextEntry={input.secureTextEntry}
               keyboardType={input.keyboardType}
               onChangeText={input.onChangeText}
+              autoCapitalize="none"
+
             />
           ))}
         {/* The container to hold primary and secondary button */}

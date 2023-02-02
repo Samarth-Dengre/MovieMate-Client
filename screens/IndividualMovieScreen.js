@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, BackHandler } from "react-native";
 import axios from "axios";
 import { auth, moviesRoute } from "../utils/routes";
 import Toast from "react-native-simple-toast";
@@ -12,11 +12,26 @@ import SimpleModal from "../components/modals/SimpleModal";
 import GifModal from "../components/modals/GifModal";
 
 function IndividualMovieScreen({ route, navigation }) {
+  // add eventlistener on back button press to go back to previous screen
+  useEffect(() => {
+    const backAction = () => {
+      navigation.navigate("Home");
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+    return () => backHandler.remove();
+  });
+
   const authCtx = useContext(AuthContext);
   const [movie, setMovie] = useState(); // Movie object
   const [loading, setLoading] = useState(true); // Loading state when the movie is being fetched
   const [addingToFavorites, setAddingToFavorites] = useState(false); // Loading state when the movie is being added to favorites
   const [isFavorite, setIsFavorite] = useState(false); // State to check if the movie is already in favorites
+  const [error, setError] = useState(false); // Error state to show an error page if the movie is not found
 
   // Function to add/remove the movie to favorites
   async function addToFavoritesHandler() {
@@ -29,7 +44,6 @@ function IndividualMovieScreen({ route, navigation }) {
         user: authCtx.user,
       });
       setAddingToFavorites(false);
-
       // Check if the movie was added/removed to favorites
       if (data.status === 200) {
         Toast.showWithGravity(data.message, Toast.SHORT, Toast.TOP);
@@ -42,10 +56,11 @@ function IndividualMovieScreen({ route, navigation }) {
       } else if (data.status === 400) {
         // If the movie was not added/removed to favorites
         Toast.showWithGravity(data.message, Toast.SHORT, Toast.TOP);
+        setError(true);
       }
     } catch (error) {
       setAddingToFavorites(false);
-      return <ErrorPage />;
+      setError(true);
     }
   }
 
@@ -74,7 +89,9 @@ function IndividualMovieScreen({ route, navigation }) {
     async function fetchMovie() {
       try {
         // Send a get request to the server to fetch the movie details from the database using the movie id
-        const { data } = await axios.get(`${moviesRoute}/${route.params.id}`);
+        const { data } = await axios.get(
+          `${moviesRoute}/${route.params.id}`
+        );
         setLoading(false);
         if (data.status === 200) {
           // If the movie is found, set the movie state
@@ -82,12 +99,12 @@ function IndividualMovieScreen({ route, navigation }) {
         } else if (data.status === 400) {
           // If the movie is not found, show an error message
           Toast.showWithGravity(data.message, Toast.SHORT, Toast.TOP);
-          return <ErrorPage />; // Return an error page
+          setError(true);
         }
       } catch (error) {
         setLoading(false);
         Toast.showWithGravity(error.message, Toast.SHORT, Toast.TOP); // Show an error message if the request fails for some reason and return an error page
-        return <ErrorPage />;
+        setError(true);
       }
     }
     fetchMovie();
@@ -97,8 +114,14 @@ function IndividualMovieScreen({ route, navigation }) {
       setMovie(null);
       setAddingToFavorites(false);
       setLoading(true);
+      setError(false);
     };
   }, [route.params, navigation]); // Re-render the component when the movie changes
+
+  // If there is an error, show an error page
+  if (error) {
+    return <ErrorPage />;
+  }
 
   return (
     <View style={styles.container}>

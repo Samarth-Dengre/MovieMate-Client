@@ -60,7 +60,7 @@ function Movie({ movie }) {
       <View style={styles.bottomContainer}>
         <View style={styles.castContainer}>
           <Text style={{ color: "grey", fontFamily: "Lora-Regular" }}>
-            {movie.cast}
+            {movie.actors}
           </Text>
         </View>
         <View style={styles.durationContainer}>
@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontFamily: "RobotoSlab-Regular",
+    width: '75%'
   },
 
   // This will style the title and imdb container

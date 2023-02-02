@@ -4,11 +4,11 @@
     "slug": "MovieMate",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/giphy.gif",
-      "backgroundColor": "transparent",
+      "image": "./assets/logo.png",
+      "backgroundColor": "#FFFFFF",
       "resizeMode": "contain"
     },
     "updates": {
@@ -18,16 +18,24 @@
       "**/*"
     ],
     "ios": {
+      "buildNumber": "1.0.0",
       "supportsTablet": true
     },
     "android": {
+      "versionCode": 1,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.moviemate.samarth"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/logo.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b8e292f9-bdbc-4d94-bfe3-8af31f0f6c8b"
+      }
     }
   }
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Text, View } from "react-native";
+import { Text, View, BackHandler } from "react-native";
 import { AuthContext } from "../store/authContext";
 import axios from "axios";
 import { moviesRoute } from "../utils/routes";
@@ -7,7 +7,21 @@ import MoviesList from "../components/movies/MoviesList";
 import ErrorPage from "../components/ErrorPage";
 import GifModal from "../components/modals/GifModal";
 
-function FavoritesScreen() {
+function FavoritesScreen({navigation}) {
+  // adding event listeners to the back button to navigate to the Home screen
+  useEffect(() => {
+    const backAction = () => {
+      navigation.navigate("Home");
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+    return () => backHandler.remove();
+  });
+
   const [movies, setMovies] = useState([]); // movies state
   const [loading, setLoading] = useState(true); // loading state to show a loader while fetching movies
   const authCtx = useContext(AuthContext);

@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, BackHandler } from "react-native";
 import axios from "axios";
 import { moviesRoute } from "../utils/routes";
 import MoviesList from "../components/movies/MoviesList";
@@ -8,6 +8,20 @@ import ErrorPage from "../components/ErrorPage";
 import GifModal from "../components/modals/GifModal";
 
 function GenreScreen({ navigation, route }) {
+  // adding event listeners to the back button to navigate to the previous screen
+  useLayoutEffect(() => {
+    const backAction = () => {
+      navigation.navigate("Home");
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+    return () => backHandler.remove();
+  });
+
   const [movies, setMovies] = useState(); // movies array
   const [loading, setLoading] = useState(true); // loading state to show loader when fetching movies from the server
 

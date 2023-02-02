@@ -13,7 +13,7 @@ function DetailedMoviePage({ movie }) {
     year,
     imdb,
     length,
-    cast,
+    actors,
     language,
     link,
   } = movie;
@@ -78,7 +78,7 @@ function DetailedMoviePage({ movie }) {
             { width: "60%", fontFamily: "Lora-Regular" },
           ]}
         >
-          Cast: {cast}
+          Cast: {actors}
         </Text>
         <Text style={styles.greyColor}>Language: {language}</Text>
       </View>
